@@ -140,6 +140,7 @@ mydata[outliers[[1]],] or
 
 na.omit(mydata[outliers$outliers,])
 
+#This is the penny method for identifying the mulivariate outliers
 x <- vector(mode="numeric", length=0)
 y<- c(1:length(mydata$Catkey))
 for (i in y)
@@ -151,7 +152,7 @@ for (i in y)
       val2 <- 1-pchisq(mdist,7)
         if(val2 < 0.01)
         { 
-        x <- c(x, val2[i])
+        x <- c(x, val2)
         }
     }
   
@@ -161,3 +162,32 @@ for (i in y)
     }
 }
   
+#this is the macros to identify and remove the outliers
+af <- read.csv("Asian_Fusion_Data.csv");
+
+mydata <- sqldf("select record,Catkey,sex,NAR,BRR,VRR,LAR,OSR,BAR,SBA from af")
+myfunction <- function(ads)
+{ 
+  x <- vector(mode="numeric", length=0)
+  y<- c(1:length(ads$Catkey))
+  for (i in y)
+  {
+    mdist <- mahalanobis(na.omit(ads[i,c(4:10)]),center=colMeans(na.omit(ads[-(i),c(4:10)])),cov(na.omit(ads[-(i),c(4:10)])) )
+    
+    if (length(mdist) > 0)
+      {
+        val2 <- 1-pchisq(mdist,7)
+        if(val2 < 0.01)
+          { 
+            x <- c(x, val2)
+          }
+        val2 <- NA
+      }
+    
+    else
+      {
+        #Do Nothin
+      }
+  }
+  print(x)
+}
