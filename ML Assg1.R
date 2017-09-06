@@ -1,4 +1,10 @@
 #Read the file into R
+install.packages("sqldf")
+library("sqldf")
+
+install.packages("car")
+library("car")
+
 af <- read.csv("Asian_Fusion_Data.csv");
 
 mydata <- sqldf("select record,Catkey,sex,NAR,BRR,VRR,LAR,OSR,BAR,SBA from af")
@@ -139,17 +145,19 @@ y<- c(1:length(mydata$Catkey))
 for (i in y)
 {
   mdist <- mahalanobis(na.omit(mydata[i,c(4:10)]),center=colMeans(na.omit(mydata[-(i),c(4:10)])),cov(na.omit(mydata[-(i),c(4:10)])) )
-  val2 <- 1-pchisq(mdist,7)
-    if (!is.null(val2) & val2 < 0.01)
+  
+    if (length(mdist) > 0)
     {
-      x <- c(x, val2[i])
+      val2 <- 1-pchisq(mdist,7)
+        if(val2 < 0.01)
+        { 
+        x <- c(x, val2[i])
+        }
     }
   
     else
     {
-      print("NO")
+      #Do Nothin
     }
-  
-  
 }
   
