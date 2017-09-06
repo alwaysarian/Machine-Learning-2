@@ -1,3 +1,4 @@
+#Read the file into R
 af <- read.csv("Asian_Fusion_Data.csv");
 
 mydata <- sqldf("select record,Catkey,sex,NAR,BRR,VRR,LAR,OSR,BAR,SBA from af")
@@ -123,3 +124,27 @@ shapiro.test(mydata$OSR)
 shapiro.test(mydata$BAR)
 
 shapiro.test(mydata$SBA)
+
+
+
+outliers <- aq.plot(na.omit(mydata[c(4:10)]), alpha = 0.01)
+
+mydata[outliers[[1]],] or 
+
+na.omit(mydata[outliers$outliers,])
+
+x <- vector(mode="numeric", length=0)
+for (i in length(mydata$Catkey))
+{
+  mdist <- mahalanobis(na.omit(mydata[i,c(4:10)]),center=colMeans(na.omit(mydata[-(i),c(4:10)])),cov(na.omit(mydata[-(i),c(4:10)])) )
+  val2 <- 1-pchisq(mdist,7)
+  if (val2 < 0.01)
+  {
+    x.append(val2)
+  }
+  else
+  {
+    print("There are no outliers")
+  }
+}
+  
