@@ -11,6 +11,7 @@ shapiro.test(mydata$VRR)
 
 shapiro.test(mydata$LAR)
 
+
 shapiro.test(mydata$OSR)
 
 shapiro.test(mydata$BAR)
@@ -134,17 +135,21 @@ mydata[outliers[[1]],] or
 na.omit(mydata[outliers$outliers,])
 
 x <- vector(mode="numeric", length=0)
-for (i in length(mydata$Catkey))
+y<- c(1:length(mydata$Catkey))
+for (i in y)
 {
   mdist <- mahalanobis(na.omit(mydata[i,c(4:10)]),center=colMeans(na.omit(mydata[-(i),c(4:10)])),cov(na.omit(mydata[-(i),c(4:10)])) )
   val2 <- 1-pchisq(mdist,7)
-  if (val2 < 0.01)
-  {
-    x.append(val2)
-  }
-  else
-  {
-    print("There are no outliers")
-  }
+    if (!is.null(val2) & val2 < 0.01)
+    {
+      x <- c(x, val2[i])
+    }
+  
+    else
+    {
+      print("NO")
+    }
+  
+  
 }
   
