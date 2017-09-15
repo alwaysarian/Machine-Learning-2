@@ -24,5 +24,3 @@ confusionMatrix(gchd, sa$chd)
 salda <- lda(as.factor(chd)~ sbp+tobacco+ldl+adiposity+famhist+typea+obesity+alcohol+age,data=sa, CV=T)
 confusionMatrix(salda$class, sa$chd)
 
-saqda <- qda(as.factor(chd)~ sbp+tobacco+ldl+adiposity+famhist+typea+obesity+alcohol+age,data=sa, CV=T)
-confusionMatrix(saqda$class, sa$chd)

@@ -1,0 +1,121 @@
+---
+title: "Logit_HeartDisease"
+author: "Praveen Kumar Neelappa"
+date: "14 September 2017"
+output: word_document
+---
+
+Read the csv South Africa Heart Disease Database and attach those data
+```{r}
+sa <-read.csv('http://math.mercyhurst.edu/~sousley/STAT_139/data/sahdd.csv', as.is = T);
+head(sa)
+attach(sa)
+```
+
+Run the logistic regression and confusion matrix
+```{r}
+chdfit <- glm(as.factor(chd)~ 
+                sbp+tobacco+ldl+adiposity+famhist+typea+obesity+alcohol+age,data=sa,family=binomial())
+
+summary(chdfit)
+
+exp(coef(chdfit))
+
+chdfac <- fitted(chdfit)
+thresh <- 0.5
+gchd <- cut(chdfac, breaks=c(-Inf, thresh, Inf), labels=c(0,1))
+
+confusionMatrix(gchd, sa$chd)
+
+```
+
+Remove alcohol and run it again
+
+```{r}
+chdfit <- glm(as.factor(chd)~
+                sbp+tobacco+ldl+adiposity+famhist+typea+obesity+age,data=sa,family=binomial())
+
+summary(chdfit)
+
+exp(coef(chdfit))
+
+chdfac <- fitted(chdfit)
+thresh <- 0.5
+gchd <- cut(chdfac, breaks=c(-Inf, thresh, Inf), labels=c(0,1))
+
+confusionMatrix(gchd, sa$chd) 
+```
+
+Remove adiposity and run it again
+
+```{r}
+chdfit <- glm(as.factor(chd)~
+                sbp+tobacco+ldl+famhist+typea+obesity+age,data=sa,family=binomial())
+
+summary(chdfit)
+
+exp(coef(chdfit))
+
+chdfac <- fitted(chdfit)
+thresh <- 0.5
+gchd <- cut(chdfac, breaks=c(-Inf, thresh, Inf), labels=c(0,1))
+
+confusionMatrix(gchd, sa$chd) 
+```
+
+Remove sbp and run it again
+```{r}
+chdfit <- glm(as.factor(chd)~
+                tobacco+ldl+famhist+typea+obesity+age,data=sa,family=binomial())
+
+summary(chdfit)
+
+exp(coef(chdfit))
+
+chdfac <- fitted(chdfit)
+thresh <- 0.5
+gchd <- cut(chdfac, breaks=c(-Inf, thresh, Inf), labels=c(0,1))
+
+confusionMatrix(gchd, sa$chd) 
+```
+
+Remove obesity and run it again
+
+```{r}
+chdfit <- glm(as.factor(chd)~
+                tobacco+ldl+famhist+typea+age,data=sa,family=binomial())
+
+summary(chdfit)
+
+exp(coef(chdfit))
+
+chdfac <- fitted(chdfit)
+thresh <- 0.5
+gchd <- cut(chdfac, breaks=c(-Inf, thresh, Inf), labels=c(0,1))
+
+confusionMatrix(gchd, sa$chd) 
+```
+
+Prediciting CHD using all qunatitative input using LDFA
+
+```{r}
+salda <- lda(as.factor(chd)~ 
+               sbp+tobacco+ldl+adiposity+famhist+typea+obesity+alcohol+age,data=sa, CV=T)
+confusionMatrix(salda$class, sa$chd)
+```
+
+
+```{r}
+sa$famhist[sa$famhist == "Present"] <- 1
+sa$famhist[sa$famhist == "Absent"] <- 0
+cor.test(sa$chd, as.numeric(as.character(sa$famhist)))
+```
+
+```{r}
+ chdfit <- glm(as.factor(chd)~ age+famhist+ldl,data=sa,family=binomial())
+ chdfac <- fitted(chdfit)
+ thresh <- 0.5
+ gchd <- cut(chdfac, breaks=c(-Inf, thresh, Inf), labels=c(0,1))
+ confusionMatrix(gchd, sa$chd)
+```
+
