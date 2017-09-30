@@ -113,11 +113,6 @@ names(listNAR)
 
 Finallist <- rbind(listNAR,listBRR, listVRR, listLAR, listOSR, listBAR, listSBA)
 
-mydata[Boxplot(mydata$NAR),"NAR"] <- NA
-Boxplot(mydata$NAR)
-
-plot(NAR,BRR,VRR,LAR,OSR,BAR,SBA)
-
 shapiro.test(mydata$NAR)
 
 shapiro.test(mydata$BRR)
@@ -136,11 +131,16 @@ shapiro.test(mydata$SBA)
 
 outliers <- aq.plot(na.omit(mydata[c(4:10)]), alpha = 0.01)
 
+outliers <- chisq.plot(na.omit(mydata[c(4:10)]))
+
 mydata[outliers[[1]],] or 
 
 na.omit(mydata[outliers$outliers,])
 
 #This is the penny method for identifying the mulivariate outliers
+af <- read.csv("Asian_Fusion_Data.csv")
+mydata <- sqldf("select record,Catkey,sex,NAR,BRR,VRR,LAR,OSR,BAR,SBA from af")
+
 x <- vector(mode="numeric", length=0)
 y<- c(1:length(mydata$Catkey))
 for (i in y)
