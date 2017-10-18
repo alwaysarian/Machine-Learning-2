@@ -26,7 +26,7 @@ for (i in 4:87)
 
 }
 
-#handle multivariate
+#handle multivariate - Completed
 
 af <- read.csv("Asian_Fusion_Data.csv", as.is = TRUE);
 
