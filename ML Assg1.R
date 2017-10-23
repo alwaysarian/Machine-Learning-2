@@ -129,7 +129,9 @@ shapiro.test(mydata$SBA)
 
 
 
-outliers <- aq.plot(na.omit(mydata[c(4:10)]), alpha = 0.01)
+aq.plot(na.omit(mydata[c(4:10)]), alpha = 0.01)
+
+outliers <- aq.plot(na.omit(mydata[c(4:10)]), alpha = 0.01, delta=qchisq(0.99, df=7))
 
 outliers <- chisq.plot(na.omit(mydata[c(4:10)]))
 
