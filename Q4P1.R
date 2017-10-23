@@ -50,3 +50,9 @@ for (i in 4:48)
   }
 }
 #flist  
+
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+finaldata <- read.csv("finaldata.csv", as.is = TRUE)
