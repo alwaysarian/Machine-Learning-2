@@ -8,26 +8,19 @@ colSums(is.na(eddat))
 table(na.omit(eddat[,c(3,5,6,9,13,25,39,40,12,27,32)])$Grp)
 eddat <- na.omit(eddat[,c(3,5,6,9,13,25,39,40,12,27,32)])
 
+Accuracies <- c(0.00)
+for (i in seq(10))
+{
+  
+  inTrain <- createDataPartition(y = eddat$Grp, p = .70, list = FALSE)
+  training <- eddat[inTrain,]
+  testing <- eddat[-inTrain,]
+  mnmfit <- multinom(Grp ~ i2+i3+i6+i10+i22+i36+i37+i9+i24+i29, data=training, trace=FALSE)
 
+  Accuracies[i] <- confusionMatrix(testing$Grp, predict(mnmfit, newdata=testing))$overall["Accuracy"]
 
-mnmfit <- multinom(Grp ~ i2+i3+i6+i10+i22+i36+i37+i9+i24+i29,data=eddat, trace=FALSE)
-summary(mnmfit)
+}
+summary(Accuracies)
 
-# get predictions on a new data set
-round(predict(mnmfit, newdata=eddat, "probs"),4)
-
-predict(mnmfit, newdata=eddat, "class")
-
-#Multinominal
-
-confusionMatrix(predict(mnmfit, newdata=eddat, "class"), eddat$Grp)
-
-# compare to ldfa and qdfa
-ldfa4 <- lda(PopSex~GOL+NOL+BNL+BBH+XCB,data=HBNMF, CV = T, priors =
-               c(1,1,1,1))
-confusionMatrix(ldfa4$class, HBNMF$PopSex)
-qdfa4 <- qda(PopSex~GOL+NOL+BNL+BBH+XCB,data=HBNMF, CV = T, priors =
-               c(1,1,1,1))
-confusionMatrix(qdfa4$class, HBNMF$PopSex)
 
 
