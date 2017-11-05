@@ -11,12 +11,7 @@ library(caret)
 Accuracies <- c(0.00)
 for (i in seq(5))
 {
-  inTrain <- createDataPartition(y = H4A$PopSex, p = .70, list = FALSE)
-  training <- H4A[inTrain,]
-  testing <- H4A[-inTrain,]
-    knn4 <- train(PopSex ~ ., data = training, method = "pda",
-                preProcess = c("center", "scale"), tuneLength = 10,
-                trControl = trainControl(method = "cv"))
+  hghgh
   update(knn4, list(.lambda = 3))
   knn4_pred <- predict(knn4,newdata = testing)
   Accuracies[i] <- confusionMatrix(knn4_pred,testing$PopSex)$overall["Accuracy"]
