@@ -17,7 +17,7 @@ for (i in seq(5))
     knn4 <- train(PopSex ~ ., data = training, method = "pda",
                 preProcess = c("center", "scale"), tuneLength = 10,
                 trControl = trainControl(method = "cv"))
-  update(knn4, list(.lambda = 3))
+  update(knn4, list(.lambda = 0))
   knn4_pred <- predict(knn4,newdata = testing)
   Accuracies[i] <- confusionMatrix(knn4_pred,testing$PopSex)$overall["Accuracy"]
 }
