@@ -1,3 +1,21 @@
+<<<<<<< HEAD
+af <- read.csv("Asian_Fusion_Data.csv", as.is = TRUE);
+
+af <- af[,c(1:48)]
+
+asian_dat <- na.omit(af)
+
+
+for (i in 4:50)
+{
+  x <- mydata[,i]
+  y <- colnames(asian_dat[i])
+  OUT <- Boxplot(x)
+  as_data <- cbind(asian_dat[OUT,c("Catkey",y)])
+  print(as_data)
+  asian_dat[Boxplot(x),y] <- NA
+} 
+=======
 library(class) #k-nearest neighbors
 library(kknn) #weighted k-nearest neighbors
 library(MASS) # contains the data
@@ -34,3 +52,4 @@ confusionMatrix(eddat$Grp, predict(edata3, test) )
 
 
 
+>>>>>>> e3c4153b0170cb4d531863eb5259142fac9bda55
